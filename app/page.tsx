@@ -1,9 +1,7 @@
-const Home = () => {
-  return ( 
-    <div className="bg-red py-5 mx-6">
+import Header from "./_components/header";
 
-    </div>
-   );
-}
- 
+const Home = () => {
+  return <Header />;
+};
+
 export default Home;
