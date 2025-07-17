@@ -1,17 +1,20 @@
 "use client";
 
+import Cart from "@/app/_components/cart";
 import DeliveryInfo from "@/app/_components/delivery-info";
 import DiscountBadge from "@/app/_components/discount-badge";
 import ProductList from "@/app/_components/product-list";
 import { Button } from "@/app/_components/ui/button";
+import { CartContext } from "@/app/_contexts/cart";
 import {
   calculateProductTotalPrice,
   formatCurrency,
 } from "@/app/_helpers/price";
+import { Sheet, SheetContent, SheetTitle } from "@/app/_components/ui/sheet";
 import { Prisma } from "@prisma/client";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 interface ProductDetailsProps {
   product: Prisma.ProductGetPayload<{
@@ -31,6 +34,13 @@ const ProductDetails = ({
   complementaryProducts,
 }: ProductDetailsProps) => {
   const [quantity, setQuantity] = useState(1);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { addProductToCart } = useContext(CartContext);
+
+  const handleAddToCart = () => {
+    addProductToCart(product, quantity);
+    setIsCartOpen(true);
+  };
 
   const handleIncreaseQuantityClick = () =>
     setQuantity((currentState) => currentState + 1);
@@ -104,8 +114,17 @@ const ProductDetails = ({
       </div>
 
       <div className="mt-6 px-5">
-        <Button className="w-full font-semibold">Adicionar à sacola</Button>
+        <Button className="w-full font-semibold" onClick={handleAddToCart}>
+          Adicionar à sacola
+        </Button>
       </div>
+
+      <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
+        <SheetContent className="w-[90vw]">
+          <SheetTitle>Sacola</SheetTitle>
+          <Cart />
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
