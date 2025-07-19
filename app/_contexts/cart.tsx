@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 "use client";
 
-import { Prisma, Product } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { createContext, ReactNode, useMemo, useState } from "react";
 import { calculateProductTotalPrice } from "../_helpers/price";
 
@@ -10,7 +10,9 @@ export interface CartProduct
     include: {
       restaurant: {
         select: {
+          id: true;
           deliveryFee: true;
+          deliveryTimeMinutes: true;
         };
       };
     };
@@ -33,7 +35,9 @@ interface CartProductContext {
       include: {
         restaurant: {
           select: {
+            id: true;
             deliveryFee: true;
+            deliveryTimeMinutes: true;
           };
         };
       };
@@ -44,6 +48,7 @@ interface CartProductContext {
   decreaseProductQuantity: (productId: string) => void;
   increaseProductQuantity: (productId: string) => void;
   removeProductFromCart: (productId: string) => void;
+  clearCart: () => void;
 }
 
 export const CartContext = createContext<CartProductContext>({
@@ -56,6 +61,7 @@ export const CartContext = createContext<CartProductContext>({
   decreaseProductQuantity: () => {},
   increaseProductQuantity: () => {},
   removeProductFromCart: () => {},
+  clearCart: () => {},
 });
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
@@ -83,6 +89,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const totalDiscounts =
     subTotalPrice - totalPrice + Number(products?.[0]?.restaurant?.deliveryFee);
+
+  const clearCart = () => {
+    return setProducts([]);
+  };
 
   const decreaseProductQuantity = (productId: string) => {
     return setProducts((prev) =>
@@ -171,6 +181,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         totalPrice,
         totalDiscounts,
         totalQuantity,
+        clearCart,
         addProductToCart,
         decreaseProductQuantity,
         increaseProductQuantity,
