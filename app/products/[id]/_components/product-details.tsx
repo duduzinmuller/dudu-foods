@@ -148,7 +148,7 @@ const ProductDetails = ({
       <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
         <SheetContent className="w-[90vw]">
           <SheetTitle>Sacola</SheetTitle>
-          <Cart />
+          <Cart setIsOpen={setIsCartOpen} />
         </SheetContent>
       </Sheet>
 
