@@ -44,7 +44,6 @@ const RestaurantItem = ({
   return (
     <div className={cn("min-w-[266px] max-w-[266px]", className)}>
       <div className="w-full space-y-3">
-        {/* IMAGEM */}
         <div className="relative h-[136px] w-full">
           <Link href={`/restaurants/${restaurant.id}`}>
             <Image
@@ -71,7 +70,6 @@ const RestaurantItem = ({
             </Button>
           )}
         </div>
-        {/* TEXTO */}
         <div>
           <h3 className="text-sm font-semibold">{restaurant.name}</h3>
           <div className="flex gap-3">
@@ -83,7 +81,6 @@ const RestaurantItem = ({
                   : formatCurrency(Number(restaurant.deliveryFee))}
               </span>
             </div>
-            {/* TEMPO DE ENTREGA */}
             <div className="flex items-center gap-1">
               <TimerIcon className="text-primary" size={14} />
               <span className="text-xs text-muted-foreground">
